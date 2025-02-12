@@ -15,9 +15,15 @@ worstCaseModuleID: ModuleID {
         listingOrder = 99
 }
 
+class WorstCaseDoor: IndirectLockable, AutoClosingDoor 'door' 'door';
+
 worstCase: PreinitObject
 	// To hold all our randomly milling-about actors.
 	worstCaseActors = perInstance(new Vector())
+
+	// Boolean.  If true, the connections between zones are lockable
+	// doors.
+	useDoors = nil
 
 	// When we add an actor to our list above we keep track of whether
 	// they're a isHer or a isHim.  This is entirely to make it
@@ -55,19 +61,25 @@ worstCase: PreinitObject
 	connectMap() {
 		local i, j, n, z0, z1;
 
-		for(j = 1; j < zoneWidth; j++) {
-			for(i = 1; i < zoneWidth; i++) {
+		for(j = 1; j <= zoneWidth; j++) {
+			for(i = 1; i <= zoneWidth; i++) {
 				// Get the "base" zone.
 				n = i + ((j - 1) * zoneWidth);
 				z0 = zones[n];
 
-				// Zone to the east of the base zone.
-				z1 = zones[n + 1];
-				_connectZonesEastWest(z0, z1);
+				// Don't connect east on the east edge.
+				if(i < zoneWidth) {
+					// Zone to the east of the base zone.
+					z1 = zones[n + 1];
+					_connectZonesEastWest(z0, z1);
+				}
 
-				// Zone to the north of the base zone.
-				z1 = zones[n + zoneWidth];
-				_connectZonesNorthSouth(z0, z1);
+				// Don't connect north on the north edge.
+				if(j < zoneWidth) {
+					// Zone to the north of the base zone.
+					z1 = zones[n + zoneWidth];
+					_connectZonesNorthSouth(z0, z1);
+				}
 			}
 		}
 	}
@@ -75,8 +87,8 @@ worstCase: PreinitObject
 	_createDoorPair(rm0, prop0, rm1, prop1) {
 		local d0, d1;
 
-		d0 = new Door();
-		d1 = new Door();
+		d0 = new WorstCaseDoor();
+		d1 = new WorstCaseDoor();
 
 		d1.masterObject = d0;
 
@@ -93,11 +105,21 @@ worstCase: PreinitObject
 	}
 
 	_connectRoomEastWest(rm0, rm1) {
-		_createDoorPair(rm0, &east, rm1, &west);
+		if(useDoors == true) {
+			_createDoorPair(rm0, &east, rm1, &west);
+		} else {
+			rm0.east = rm1;
+			rm1.west = rm0;
+		}
 	}
 
 	_connectRoomNorthSouth(rm0, rm1) {
-		_createDoorPair(rm0, &north, rm1, &south);
+		if(useDoors == true) {
+			_createDoorPair(rm0, &north, rm1, &south);
+		} else {
+			rm0.north = rm1;
+			rm1.south = rm0;
+		}
 	}
 
 	_connectZonesEastWest(z0, z1) {

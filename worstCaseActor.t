@@ -111,6 +111,7 @@ class WorstCaseAgenda: AgendaItem
 
 		// Get the path to the target room.
 		l = worstCase.findPath(a, rm0, rm1);
+if(l == nil) aioSay('\n==path failed:  <<rm0.worstCaseRoomName()>> to <<rm1.worstCaseRoomName()>>==\n ');
 		if((l == nil) || (l.length < 2)) return;
 
 		// If we want to return to the room we just left there's
