@@ -12,4 +12,12 @@
 #error "simpleRandomMap should be in /home/user/tads/simpleRandomMap ."
 #endif // SIMPLE_RANDOM_MAP_H
 
+#ifndef isType
+#define isType(obj, cls) ((obj != nil) && obj.ofKind(cls))
+#endif // isType
+
+#define isWorstCaseActor(obj) (isType(obj, WorstCaseActor))
+
+#define wcRand(min, max) (rand(max - min + 1) + min)
+
 #define WORST_CASE_H

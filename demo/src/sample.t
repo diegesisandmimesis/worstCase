@@ -41,8 +41,14 @@ versionInfo: GameID
 ;
 gameMain: GameMainDef
 	initialPlayerChar = me
-	inlineCommand(cmd) { "<b>&gt;<<toString(cmd).toUpper()>></b>"; }
-	printCommand(cmd) { "<.p>\n\t<<inlineCommand(cmd)>><.p> "; }
+	newGame() {
+		local rm;
+
+		rm = worstCase.getRandomRoom();
+		if(rm)
+			initialPlayerChar.moveInto(rm);
+		inherited();
+	}
 ;
 
 startRoom: Room 'Void' "This is a featureless void.";
