@@ -1,6 +1,6 @@
 #charset "us-ascii"
 //
-// sample.t
+// singleTest.t
 // Version 1.0
 // Copyright 2022 Diegesis & Mimesis
 //
@@ -8,7 +8,7 @@
 //
 // It can be compiled via the included makefile with
 //
-//	# t3make -f makefile.t3m
+//	# t3make -f singleTest.t3m
 //
 // ...or the equivalent, depending on what TADS development environment
 // you're using.
@@ -31,11 +31,6 @@ versionInfo: GameID
 		"This is a simple test game that demonstrates the features
 		of the worstCase library.
 		<.p>
-		By default it creates a gameworld of four hundred rooms
-		containing four hundred actors who chase each other around.
-		<.p>
-		This is intended as a worst case performance model.
-		<.p>
 		Consult the README.txt document distributed with the library
 		source for a quick summary of how to use the library in your
 		own games.
@@ -47,10 +42,24 @@ versionInfo: GameID
 gameMain: GameMainDef
 	initialPlayerChar = me
 	newGame() {
-		worstCase.putInRandomRoom(initialPlayerChar);
+		local rm;
+
+		rm = worstCase.getRandomRoom();
+		if(rm)
+			initialPlayerChar.moveInto(rm);
 		inherited();
 	}
 ;
 
 startRoom: Room 'Void' "This is a featureless void.";
 +me: Person;
+
+modify worstCase
+	// Only generate one zone (a 1x1 zone map).
+	zoneWidth = 2
+;
+
+modify WorstCaseMapGenerator
+	// Make a 3x3 maze instead of a 10x10 one.
+	mapWidth = 3
+;

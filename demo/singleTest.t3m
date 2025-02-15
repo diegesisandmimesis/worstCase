@@ -4,10 +4,11 @@
 -D WORST_CASE
 -Fy obj -Fo obj
 -Fs ../..
--o games/game.t3
+-o games/singleTest.t3
 -lib system
 -lib adv3/adv3
 -lib simpleRandomMap/simpleRandomMap
 -lib ../worstCase
--source src/sample.t
+-source src/singleTest.t
 -source extensions/pathfind.t
+-source reflect.t

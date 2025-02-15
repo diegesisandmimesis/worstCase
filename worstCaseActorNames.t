@@ -2,10 +2,17 @@
 //
 // worstCaseActorNames.t
 //
+//	The most common male and female names according to some random
+//	web page.  The original version just named all the NPCs "Alice #1"
+//	through "Alice #400" but that seemed kinda creepy so here we are.
+//
+//
 #include <adv3.h>
 #include <en_us.h>
 
 #include "worstCase.h"
+
+#ifdef WORST_CASE
 
 modify WorstCaseActor
 	_isHerNames = static [
@@ -2014,3 +2021,5 @@ modify WorstCaseActor
 		'Hollis'
 	]
 ;
+
+#endif // WORST_CASE

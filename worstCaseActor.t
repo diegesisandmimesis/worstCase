@@ -2,10 +2,20 @@
 //
 // worstCaseActor.t
 //
+//	Class for all the wandering actors.  They all get a random
+//	pronoun, name, and other NPC they're after.  Their basic behavior
+//	is to always move toward their chosen target actor, but there's
+//	a little bit of additional logic to damp oscillations (chance to
+//	just not move when pathfinding would make them re-enter the
+//	room they just left, for example).
+//
+//
 #include <adv3.h>
 #include <en_us.h>
 
 #include "worstCase.h"
+
+#ifdef WORST_CASE
 
 // Generic actor for our gameworld.  This all started out with 
 class WorstCaseActor: Person
@@ -14,6 +24,7 @@ class WorstCaseActor: Person
 		with a problem. "
 	isProperName = true
 
+	// Position in the global actor list.  Just used as an identifier.
 	actorNumber = nil
 
 	isHer = nil
@@ -41,6 +52,7 @@ class WorstCaseActor: Person
 		cmdDict.addWord(self, n.toLower(), &noun);
 	}
 
+	// Add the actor-seeking agenda.
 	_initWorstCaseAgenda() {
 		local g;
 
@@ -51,6 +63,7 @@ class WorstCaseActor: Person
 		g.location = self;
 	}
 
+	// General init method for this actor class.
 	initializeWorstCaseActor() {
 		_initWorstCaseActor();
 		_initWorstCaseName();
@@ -61,6 +74,19 @@ class WorstCaseActor: Person
 	}
 ;
 
+// Agenda for our actors.
+//
+// The basic logic is:
+//	-If we don't have a target, pick a random actor other than ourselves
+//	-Do nothing 25% of the time
+//	-Figure out the path to the target actor
+//	-If pathfinding would take us back to the room we just left, 50%
+//	 of the time do nothing instead
+//	-Otherwise take one step closer to the target actor
+//
+// The "do nothing" bits are designed to damp oscillations where a flock
+// of actors ends up chasing each other back and forth between the same two
+// rooms.
 class WorstCaseAgenda: AgendaItem
 	initiallyActive = true
 	isReady = true
@@ -84,6 +110,7 @@ class WorstCaseAgenda: AgendaItem
 		return(true);
 	}
 
+	// Get the room the target is in.
 	getTargetRoom() {
 		return(targetActor ? targetActor.getOutermostRoom()
 			: nil);
@@ -111,7 +138,6 @@ class WorstCaseAgenda: AgendaItem
 
 		// Get the path to the target room.
 		l = worstCase.findPath(a, rm0, rm1);
-if(l == nil) aioSay('\n==path failed:  <<rm0.worstCaseRoomName()>> to <<rm1.worstCaseRoomName()>>==\n ');
 		if((l == nil) || (l.length < 2)) return;
 
 		// If we want to return to the room we just left there's
@@ -127,6 +153,9 @@ if(l == nil) aioSay('\n==path failed:  <<rm0.worstCaseRoomName()>> to <<rm1.wors
 		// Remember where we were this turn.
 		lastRoom = rm0;
 
+		// Move.
 		newActorAction(a, TravelVia, d);
 	}
 ;
+
+#endif // WORST_CASE
