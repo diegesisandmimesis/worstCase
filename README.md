@@ -1,4 +1,4 @@
-# fastPath
+# worstCase
 
 A TADS3/adv3 module providing a "worst case" gameworld for performance
 testing.
@@ -69,10 +69,10 @@ In this example we'll use ``/home/username/tads`` as the base directory.
 
 * Clone this repo:
 
-  ``git clone https://github.com/diegesisandmimesis/fastPath.git``
+  ``git clone https://github.com/diegesisandmimesis/worstCase.git``
 
 After the ``git`` command, the module source will be in
-``/home/username/tads/fastPath``.
+``/home/username/tads/worstCase``.
 
 <a name="running"/></a>
 ### Compiling and Running Demos
@@ -83,9 +83,9 @@ comes with the module.
 
 All the demos are structured in the expectation that they will be compiled
 and run from the ``./demo/`` directory.  Again assuming that the module
-is installed in ``/home/username/tads/fastPath/``, enter the directory with:
+is installed in ``/home/username/tads/worstCase/``, enter the directory with:
 ```
-# cd /home/username/tads/fastPath/demo
+# cd /home/username/tads/worstCase/demo
 ```
 Then make one of the demos, for example:
 ```
