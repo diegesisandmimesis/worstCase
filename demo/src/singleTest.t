@@ -56,7 +56,7 @@ startRoom: Room 'Void' "This is a featureless void.";
 
 modify worstCase
 	// Only generate one zone (a 1x1 zone map).
-	zoneWidth = 2
+	zoneWidth = 1
 ;
 
 modify WorstCaseMapGenerator
