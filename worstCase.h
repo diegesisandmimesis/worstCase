@@ -9,7 +9,6 @@
 #error "It should be in the same parent directory as this module.  So if"
 #error "worstCase is in /home/user/tads/worstCase, then"
 #error "simpleRandomMap should be in /home/user/tads/simpleRandomMap ."
-#else
 #endif // SIMPLE_RANDOM_MAP_H
 
 #ifndef isType
